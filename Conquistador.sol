@@ -33,7 +33,7 @@ contract Conquistador {
 
         flag.capture(bragger);
 
-        require(address(this).balance > oldBalance);
+        require(address(this).balance == oldBalance + msg.value);
         require(flag.captured(this) == true);
     }
 }

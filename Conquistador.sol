@@ -27,13 +27,13 @@ contract Conquistador {
     }
 
     function capture(Flag flag, bytes32 bragger) public payable {
-        (new ScapeGoat).value(msg.value)(flag);
-
         uint oldBalance = address(this).balance;
+
+        (new ScapeGoat).value(msg.value)(flag);
 
         flag.capture(bragger);
 
-        require(address(this).balance == oldBalance + msg.value);
+        require(address(this).balance >= oldBalance);
         require(flag.captured(this));
     }
 }
